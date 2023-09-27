@@ -30,8 +30,8 @@ monkes : list[str] = ['https://sun9-79.userapi.com/impg/-JPgD8xr9rK3WeiFKcwMp5nh
             'https://sun9-25.userapi.com/impg/RNqRUVYrONNRn1qkgZx-CY7jLHs61ylqdk1ZNQ/Ai169g8LE-4.jpg?size=810x1080&quality=95&sign=1783fbc4d5111bf387bb462b7093cfc5&type=album']
 
 
-TOKEN_ADMIN : str = '6695234791:AAG4Y9ZHh9rRmcyAwghFob1ErjHlZ_rIDXk'
-TOKEN_OWM : str = '381daa25d46266525eee2ff2281df295'
+TOKEN_ADMIN : str = 'aaa'
+TOKEN_OWM : str = 'aaa'
 
 
 # @dp.message(Command(commands=['pay']))

@@ -22,7 +22,7 @@ kb_game_main = ReplyKeyboardMarkup(keyboard=[[
         KeyboardButton(text='Угадываем'),
         KeyboardButton(text='Загадать Дусе')],
         [KeyboardButton(text='/cancel')]],
-        resize_keyboard=True
+        resize_keyboard=True   
 )
 
 kb_game_confirm = ReplyKeyboardMarkup(keyboard=[[
@@ -37,6 +37,17 @@ ikb: InlineKeyboardMarkup = InlineKeyboardMarkup(
         InlineKeyboardButton(text='👎🏾',callback_data='dislike')],
                      [InlineKeyboardButton(text='Другое фото',callback_data='Другое фото')],
                      [InlineKeyboardButton(text='Главное меню',callback_data='Главное меню')]])
+
+def create_inline_kb(tempStr : str) -> InlineKeyboardMarkup:
+    keyboard : list[list[InlineKeyboardButton]] = [[],[],[],[],[]]
+    counter = 1
+    for i in tempStr:
+        keyboard[counter // 8].append(InlineKeyboardButton(text=i,callback_data=i))
+        counter+=1
+
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
 
 # ikb = InlineKeyboardBuilder()
 # ikb.add(InlineKeyboardButton(text='❤️',callback_data='like'),

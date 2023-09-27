@@ -1,8 +1,11 @@
 from aiogram import types,Bot
-from bot_keyboard import kb_main,kb_game_confirm,ikb,kb_game_main,kb_game_main_bun
+from bot_keyboard import *
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
+
+import pymorphy3
+morph = pymorphy3.MorphAnalyzer()
 
 wordForBun : str ='панда'
 wordForSir : str ='карта'
@@ -20,7 +23,7 @@ counter : int = 0
 async def cancel_command(message: types.Message,bot:Bot,state: FSMContext):
     await state.clear()
     await message.answer('Действие успешно отменено (даже если никакого действия не было, кто-то все отменил!!!)',
-                         reply_markup=kb_main)
+                        reply_markup=kb_main)
     global tempWord
     global counter
     tempWord = [[],[],[],[],[],[]]
@@ -99,10 +102,12 @@ async def check_word(message: types.Message,bot:Bot, state: FSMContext):
 
 
 counter = 0
+full_kb='ёйцукенгшщзхъфывапролджэячсмитьбю'
 async def start_game(message: types.Message,bot:Bot, state: FSMContext):
     tempWordCounter = dict()
     wordForGame
     global tempWord
+    global full_kb
     inputText = message.text.lower()
     for i in  wordForGame:
             if i in tempWordCounter:
@@ -110,11 +115,20 @@ async def start_game(message: types.Message,bot:Bot, state: FSMContext):
             else:
                 tempWordCounter[i] = 1
     if len(inputText) == len(tempWord[0]):
+        count = 0
+        x = morph.parse(inputText)
+        for i in x:
+            if 'NOUN' in i.tag and inputText == i.normal_form and morph.word_is_known(inputText):
+                if not('Geox'in i.tag or 'Name' in i.tag) and i.score > 0.1:
+                    count=1
+        if not count:
+            await message.answer(text=f'Слово <code>{inputText}</code> не разрешено!')
+            return
         global counter
         on_print : str = ''
         for i in range(len(tempWord[counter])):
             if inputText[i] == wordForGame[i]: #если буква на своем месте
-                tempWord[counter][i] ='<b>' + inputText[i] + '</b>'
+                tempWord[counter][i] ='<b><code>' + inputText[i] + '</code></b>'
                 tempWordCounter[inputText[i]]-=1
 
         for i in range(len(tempWord[counter])):
@@ -127,26 +141,31 @@ async def start_game(message: types.Message,bot:Bot, state: FSMContext):
                         tempWord[counter][i] ='<strike>' + inputText[i] + '</strike>'
                 else: #если буквы вообще нет
                     tempWord[counter][i] ='<strike>' + inputText[i] + '</strike>'
+                    if  inputText[i] in full_kb:
+                        x = full_kb.find(inputText[i])
+                        full_kb = full_kb[:x] + full_kb[x+1:]
         counter+=1
         for j in tempWord:
             a = '   '.join(j)
             on_print+=a + '\n'
         await bot.send_message(chat_id=message.chat.id,
-                            text=f'{on_print}')
-        if message.text == wordForGame:
+                            text=f'{on_print}',
+                            reply_markup=create_inline_kb(full_kb))
+        if message.text.lower() == wordForGame:
             await bot.send_message(chat_id=message.chat.id,
                                    text=f'Вы угадали слово с {counter} попытки!',
                                    reply_markup=kb_main)
             await state.clear()
+            full_kb='ёйцукенгшщзхъфывапролджэячсмитьбю'
             tempWord = [[],[],[],[],[],[]]
             counter = 0
         elif counter == 6:
             tempWord = [[],[],[],[],[],[]]
             counter = 0
+            full_kb='ёйцукенгшщзхъфывапролджэячсмитьбю'
             await bot.send_message(chat_id=message.chat.id,
                                    text=f'Вы не угадали слово!!\n'
                                         f'Ваше слово: {wordForGame}',
                                    reply_markup=kb_main)
-
     else:
         await message.answer('Не может быть слово другой длины, попробуйте снова')

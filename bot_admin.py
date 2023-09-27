@@ -33,6 +33,11 @@ dp.message.register(broadcast_command,basicState.broadcast)
 dp.message.register(check_word,gameState.menu,F.text=='Угадываем')
 dp.message.register(start_game,gameState.inGame)
 
+@dp.callback_query(gameState.inGame)
+async def basic_callback(callback: types.CallbackQuery):
+    await callback.answer(text='Это просто буква, не тыкай')
+    
+
 @dp.callback_query()
 async def photo_callback(callback: types.CallbackQuery):
     global monke # это очень плохо!!!!
