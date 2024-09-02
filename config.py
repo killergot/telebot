@@ -29,37 +29,12 @@ monkes : list[str] = ['https://sun9-79.userapi.com/impg/-JPgD8xr9rK3WeiFKcwMp5nh
             'https://sun9-6.userapi.com/impg/I6f13MWyhuxfM9u4KSJArdtYNJj5ZGv9ItdfQQ/Q0Rie9lz8zU.jpg?size=810x1080&quality=95&sign=6a6690023b3a5e1580092f58edfadb2b&type=album',
             'https://sun9-25.userapi.com/impg/RNqRUVYrONNRn1qkgZx-CY7jLHs61ylqdk1ZNQ/Ai169g8LE-4.jpg?size=810x1080&quality=95&sign=1783fbc4d5111bf387bb462b7093cfc5&type=album']
 
+TOKEN_ADMIN : str = '6695234791:AAG4Y9ZHh9rRmcyAwghFob1ErjHlZ_rIDXk'
+TOKEN_OWM : str = '381daa25d46266525eee2ff2281df295'
 
-TOKEN_ADMIN : str = 'aaa'
-TOKEN_OWM : str = 'aaa'
 
+host = "127.0.0.1"
+user = "postgres"
+password = "132435"
+db_name = "telebot"
 
-# @dp.message(Command(commands=['pay']))
-# async def pay_command(message: types.Message):
-#     await bot.send_invoice(
-#         chat_id=message.chat.id,
-#         title='Пробуем чот покупать',
-#         description='Какое-то описание товара',
-#         payload='так и не понял, для чего именно данное поле',
-#         provider_token='381764678:TEST:65965',
-#         currency='rub',
-#         prices=[
-#             types.LabeledPrice(
-#                 label='Что-то новенькое',
-#                 amount='1000'
-#             )
-#         ],
-#         max_tip_amount=500,
-#         suggested_tip_amounts=[100,200,300,500]
-#     )
-
-# @dp.pre_checkout_query()
-# async def pre_checkout_query(pre: types.PreCheckoutQuery):
-#     await bot.answer_pre_checkout_query(pre_checkout_query_id=pre_checkout_query.id,
-#                                         ok=True)
-
-# @dp.message.register()
-# async def succesfull_payment(message: types.Message):
-#     await bot.send_message(chat_id=message.chat.id,
-#                            text='готово',
-#                            reply_markup=kb_main)

@@ -6,11 +6,14 @@ from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils.config import get_default_config
 from pyowm.utils import timestamps
+
 from bot_keyboard import kb_main,ikb
 from config import TOKEN_OWM,monkes,HELP_COMMAND
+from sqlite import delete_photo,create_photo,get_random_photo
+
 import random
 
-monke : str = random.choice(monkes)
+monke : str = '1'
 
 config_dict = get_default_config()
 config_dict['language'] = 'ru'
@@ -21,6 +24,7 @@ mgr = owm.weather_manager()
 class basicState(StatesGroup):
     weather = State()
     broadcast = State()
+    add_photo = State()
 
 async def start_command(message: types.Message,bot:Bot):
     await bot.send_message(chat_id=message.chat.id,
@@ -34,20 +38,29 @@ async def help_command( message: types.Message,bot:Bot):
         await bot.send_message(message.chat.id,text=HELP_COMMAND+'Начните диалог с нашим ботом!')
         await message.delete()
 
-async def links_command(message: types.Message,bot:Bot):
+async def links_command(message: types.Message,bot:Bot,state: FSMContext):
     await bot.send_message(chat_id=message.chat.id,
-                            text='Пока ничего нет',
-                            reply_markup=kb_main)
+                            text='Отправьте ссылку на фото',
+                            reply_markup=ReplyKeyboardRemove())
+    await state.set_state(basicState.add_photo)
+    
+async def add_photo(message: types.Message,bot:Bot,state: FSMContext):
+    photo = message.photo[-1].file_id
+    test = await create_photo(photo)
+    await bot.send_message(chat_id=message.chat.id,
+                           text=test)
+    await state.clear()
+    
 
 async def get_photo_command(message: types.Message,bot:Bot):
-    global monke #это очень плохо
-    await message.answer('Как тебе?',
+    global monke
+    monke = await get_random_photo()
+    await message.answer('Удалить или оставить?',
                          reply_markup=ReplyKeyboardRemove())
     await bot.send_photo(chat_id = message.chat.id,
                         photo=monke,
                         caption='Вот обезьянка',
                         reply_markup=ikb)
-    monke = random.choice(monkes)
 
 async def location_command(message: types.Message,bot:Bot):
     await bot.send_location(chat_id = message.chat.id,

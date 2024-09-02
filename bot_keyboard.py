@@ -46,11 +46,3 @@ def create_inline_kb(tempStr : str) -> InlineKeyboardMarkup:
         counter+=1
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
-
-
-
-# ikb = InlineKeyboardBuilder()
-# ikb.add(InlineKeyboardButton(text='❤️',callback_data='like'),
-#         InlineKeyboardButton(text='👎🏾',callback_data='dislike'))
-# ikb.add(InlineKeyboardButton(text='Другое фото',callback_data='Другое фото'))
-# ikb.add(InlineKeyboardButton(text='Главное меню',callback_data='Главное меню'))
