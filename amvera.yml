@@ -9,4 +9,3 @@ run:
   persistenceMount: /data
   containerPort: "80"
   scriptName: bot_admin.py
-  command: python bot_admin.py
