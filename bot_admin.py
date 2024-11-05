@@ -1,6 +1,8 @@
 from aiogram import Bot,Dispatcher, types, F
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.filters import Command
+import time
+
 import asyncio
 
 from config import TOKEN_ADMIN
@@ -11,7 +13,7 @@ from handler import *
 from wordly import *
 
 storage = MemoryStorage()
-
+time.sleep(5)
 bot = Bot(TOKEN_ADMIN,parse_mode='HTML')
 dp = Dispatcher(storage=storage)
 
