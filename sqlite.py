@@ -3,7 +3,7 @@ import sqlite3 as sq
 def db_start():
     global db,cur
 
-    db = sq.connect('new.db')
+    db = sq.connect('Data/new.db')
     cur = db.cursor()
 
     cur.execute("""CREATE TABLE IF NOT EXISTS "photo_monkey" (
