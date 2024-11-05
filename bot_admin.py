@@ -23,16 +23,18 @@ def on_startup(): #эта функция в начале всегда(почит
     print('Я был запущен!!!!!')
     
 
-dp.message.register(cancel_command,Command(commands=['cancel']))
+dp.message.register(cancel_command,Command(commands=['cancel','c']))
 dp.message.register(start_command,Command(commands=['start']))
 dp.message.register(help_command,Command(commands=['help']))
-dp.message.register(links_command,Command(commands=['links']))
 dp.message.register(get_photo_command,Command(commands=['photo']))
 dp.message.register(location_command,Command(commands=['location']))
-dp.message.register(weather_command,Command(commands=['weather']))
 dp.message.register(give_command,Command(commands=['give']))
+
 dp.message.register(ban_command,F.text.lower() == "бан")
+
+dp.message.register(weather_command,Command(commands=['weather']))
 dp.message.register(echo_weather,basicState.weather)
+
 dp.message.register(game_command,Command(commands=['game']))
 dp.message.register(menu_command,gameState.menu,F.text.startswith('Загадать'))
 dp.message.register(game_choice,gameState.choice)
@@ -40,6 +42,8 @@ dp.message.register(game_confirm,gameState.confirm)
 dp.message.register(broadcast_command,basicState.broadcast)
 dp.message.register(check_word,gameState.menu,F.text=='Угадываем')
 dp.message.register(start_game,gameState.inGame)
+
+dp.message.register(links_command,Command(commands=['links']))
 dp.message.register(add_photo,basicState.add_photo)
 
 @dp.callback_query(gameState.inGame)

@@ -1,4 +1,4 @@
-from aiogram import types,Bot
+from aiogram import types,Bot,Router
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import ReplyKeyboardRemove
@@ -8,7 +8,7 @@ from pyowm.utils.config import get_default_config
 from pyowm.utils import timestamps
 
 from bot_keyboard import kb_main,ikb
-from config import TOKEN_OWM,monkes,HELP_COMMAND
+from config import TOKEN_OWM, HELP_COMMAND, ID_MY_GIRL, MY_ID
 from sqlite import delete_photo,create_photo,get_random_photo
 
 import random
@@ -40,15 +40,16 @@ async def help_command( message: types.Message,bot:Bot):
 
 async def links_command(message: types.Message,bot:Bot,state: FSMContext):
     await bot.send_message(chat_id=message.chat.id,
-                            text='Отправьте ссылку на фото',
+                            text='Отправьте фотографию',
                             reply_markup=ReplyKeyboardRemove())
     await state.set_state(basicState.add_photo)
     
 async def add_photo(message: types.Message,bot:Bot,state: FSMContext):
     photo = message.photo[-1].file_id
-    test = await create_photo(photo)
+    response_create = await create_photo(photo)
     await bot.send_message(chat_id=message.chat.id,
-                           text=test)
+                           text=response_create,
+                           reply_markup=kb_main)
     await state.clear()
     
 
@@ -75,16 +76,7 @@ async def weather_command(message: types.Message,bot:Bot,state: FSMContext):
     await state.set_state(basicState.weather)
     
 
-async def give_command(message: types.Message,bot:Bot,state: FSMContext):
-    if message.from_user.id == 932481272:
-        await bot.send_message(chat_id=message.chat.id,
-                           text='Введите сообщение, которое хотите передать своему господину: ',
-                           reply_markup=ReplyKeyboardRemove())
-    else:
-         await bot.send_message( chat_id=message.chat.id,
-                           text='Введите сообщение, которое хотите передать своей булочке: ',
-                           reply_markup=ReplyKeyboardRemove())
-    await state.set_state(basicState.broadcast)
+
     
 async def ban_command(message: types.Message,bot:Bot):
     await bot.send_photo(chat_id = message.chat.id,
@@ -108,10 +100,21 @@ async def echo_weather(message: types.Message,bot:Bot, state: FSMContext):
                             reply_markup=kb_main)
         await state.clear()
 
+async def give_command(message: types.Message,bot:Bot,state: FSMContext):
+    if message.from_user.id == ID_MY_GIRL:
+        await bot.send_message(chat_id=message.chat.id,
+                           text='Введите сообщение, которое хотите передать своему господину: ',
+                           reply_markup=ReplyKeyboardRemove())
+    else:
+         await bot.send_message( chat_id=message.chat.id,
+                           text='Введите сообщение, которое хотите передать своей коллеге по сексу: ',
+                           reply_markup=ReplyKeyboardRemove())
+    await state.set_state(basicState.broadcast)
+
 async def broadcast_command(message: types.Message,bot:Bot, state: FSMContext):
-    if message.chat.id == 932481272:
+    if message.from_user.id == ID_MY_GIRL:
         try:
-            await message.send_copy(chat_id=588564125)
+            await message.send_copy(chat_id=MY_ID)
             await bot.send_message(chat_id=message.chat.id,
                                    text='Переданно успешно',
                                    reply_markup=kb_main)
@@ -121,7 +124,7 @@ async def broadcast_command(message: types.Message,bot:Bot, state: FSMContext):
                                    text='Произошла ошибка, поменяй что-то и пробуй еще раз')
     else:
         try:
-            await message.send_copy(chat_id=932481272)
+            await message.send_copy(chat_id=ID_MY_GIRL)
             await bot.send_message(chat_id=message.chat.id,
                                    text='Переданно успешно',
                                    reply_markup=kb_main)

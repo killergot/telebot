@@ -3,6 +3,7 @@ from bot_keyboard import *
 from aiogram.types import ReplyKeyboardRemove
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
+from config import ID_MY_GIRL,MY_ID
 
 import pymorphy3
 morph = pymorphy3.MorphAnalyzer()
@@ -32,7 +33,7 @@ async def cancel_command(message: types.Message,bot:Bot,state: FSMContext):
 
 async def game_command(message: types.Message,bot:Bot, state: FSMContext):
     await state.set_state(gameState.menu)
-    if (message.from_user.id == 932481272):
+    if (message.from_user.id == ID_MY_GIRL):
         keyboard=kb_game_main_bun
     else:
         keyboard=kb_game_main
@@ -49,7 +50,7 @@ async def menu_command(message: types.Message,bot:Bot, state: FSMContext):
     
 async def game_choice(message: types.Message,bot:Bot, state: FSMContext):
     global wordForSir,wordForBun
-    if message.from_user.id == 932481272:
+    if message.from_user.id == ID_MY_GIRL:
         wordForSir = message.text.lower()
     else:
         wordForBun = message.text.lower()
@@ -81,7 +82,7 @@ async def check_word(message: types.Message,bot:Bot, state: FSMContext):
     wordForBun
     wordForSir
     global wordForGame
-    if message.from_user.id == 932481272:
+    if message.from_user.id == ID_MY_GIRL:
         wordForGame = wordForBun
     else:
         wordForGame = wordForSir
@@ -102,7 +103,7 @@ async def check_word(message: types.Message,bot:Bot, state: FSMContext):
 
 
 counter = 0
-full_kb='ёйцукенгшщзхъфывапролджэячсмитьбю'
+full_kb='йёцукенгшщзхъфывапролджэячсмитьбю'
 async def start_game(message: types.Message,bot:Bot, state: FSMContext):
     tempWordCounter = dict()
     wordForGame

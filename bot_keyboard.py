@@ -20,7 +20,7 @@ kb_game_main_bun = ReplyKeyboardMarkup(keyboard=[[
 
 kb_game_main = ReplyKeyboardMarkup(keyboard=[[
         KeyboardButton(text='Угадываем'),
-        KeyboardButton(text='Загадать Дусе')],
+        KeyboardButton(text='Загадать Клубничке')],
         [KeyboardButton(text='/cancel')]],
         resize_keyboard=True   
 )
