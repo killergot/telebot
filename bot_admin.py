@@ -12,10 +12,9 @@ from sqlite import db_start,delete_photo,get_random_photo
 from handler import *
 from wordly import *
 
-storage = MemoryStorage()
 time.sleep(5)
 bot = Bot(TOKEN_ADMIN,parse_mode='HTML')
-dp = Dispatcher(storage=storage)
+dp = Dispatcher()
 
 def on_startup(): #эта функция в начале всегда(почитать про аргумент _)
     try:
